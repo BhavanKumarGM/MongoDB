@@ -1,173 +1,230 @@
-# 🚀 XGBoost Implementation
+# MongoDB Guide
 
-A complete implementation of **Extreme Gradient Boosting (XGBoost)** using Python and Scikit-learn.
-This project demonstrates model training, evaluation, and performance analysis on a supervised learning dataset.
+## Overview
 
----
+MongoDB is a **NoSQL document-oriented database** designed for high performance, high availability, and scalability.
+Unlike relational databases that store data in tables, MongoDB stores data in **documents** using a JSON-like structure called **BSON (Binary JSON)**.
 
-## 📌 Overview
-
-XGBoost (Extreme Gradient Boosting) is an optimized and regularized implementation of gradient boosting designed for speed and performance.
-
-This project demonstrates:
-
-* Understanding gradient boosting fundamentals
-* Implementing XGBoost for regression tasks
-* Model training and prediction
-* Performance evaluation using standard metrics
+MongoDB is commonly used in modern web applications, data analytics systems, and distributed architectures.
 
 ---
 
-## ⚙️ Technologies Used
+## Key Features
 
-* Python
-* XGBoost
-* Scikit-learn
-* NumPy
-* Pandas
-* Matplotlib (optional for visualization)
+### Document-Oriented Storage
+
+MongoDB stores data in flexible documents instead of rows and columns.
+
+Example document:
+
+```json
+{
+  "name": "Bhavan",
+  "age": 21,
+  "skills": ["Python", "Machine Learning", "MongoDB"]
+}
+```
 
 ---
 
-## 📂 Project Structure
+### Schema Flexibility
+
+MongoDB collections do not require a fixed schema.
+
+Example:
+
+```json
+{ "name": "Alice", "age": 25 }
+{ "name": "Bob", "email": "bob@gmail.com" }
+```
+
+Both documents can exist in the same collection.
+
+---
+
+### Horizontal Scalability
+
+MongoDB supports **sharding**, which distributes data across multiple servers for handling large datasets.
+
+---
+
+### High Availability
+
+MongoDB provides **replica sets**, which maintain multiple copies of data for fault tolerance and automatic failover.
+
+---
+
+## MongoDB Architecture
 
 ```
-project/
+MongoDB Server
 │
-├── data/
-│   └── dataset.csv
-│
-├── model.py
-├── requirements.txt
-└── README.md
+├── Database
+│     ├── Collection
+│     │      ├── Document
+│     │      ├── Document
+│     │      └── Document
+```
+
+Example structure:
+
+```
+company_db
+ └── employees
+      ├── {name:"Alice", role:"Engineer"}
+      ├── {name:"Bob", role:"Manager"}
 ```
 
 ---
 
-## 📊 Algorithm Overview
+## Installation
 
-XGBoost improves gradient boosting using:
+### Windows
 
-* Regularization (L1 & L2)
-* Parallel processing
-* Tree pruning
-* Handling missing values automatically
-* Efficient memory usage
-
-Objective function:
-
-```
-Obj = Σ Loss(y_i , ŷ_i) + Σ Ω(f_k)
-```
-
-Where:
-
-* **Loss** → prediction error
-* **Ω(f_k)** → regularization term controlling model complexity
-
-Regularization term:
-
-```
-Ω(f) = γT + ½ λ Σ w_j²
-```
-
-Where:
-
-* **T** → number of leaves
-* **w** → leaf weights
-* **γ** → complexity penalty
-
----
-
-## 📦 Installation
-
-Clone the repository:
+1. Download MongoDB Community Edition.
+2. Run the installer.
+3. Add MongoDB to system PATH.
+4. Verify installation.
 
 ```bash
-git clone https://github.com/yourusername/xgboost-implementation.git
-cd xgboost-implementation
+mongosh
 ```
 
-Install dependencies:
+---
+
+## Connecting to MongoDB Atlas
+
+MongoDB Atlas is the **cloud-hosted version of MongoDB**.
+
+Connection command:
 
 ```bash
-pip install -r requirements.txt
+mongosh "mongodb+srv://username:password@cluster.mongodb.net/"
 ```
 
----
-
-## ▶️ Running the Model
-
-Run the training script:
+Example:
 
 ```bash
-python model.py
+mongosh "mongodb+srv://bhavan:password123@cluster.mongodb.net/"
 ```
 
 ---
 
-## 📈 Model Evaluation Metrics
+## Basic MongoDB Shell Commands
 
-The following metrics are used:
+### Show Databases
 
-* **Mean Squared Error (MSE)**
-* **R² Score**
-
-Example output:
-
-```
-Model Evaluation
-----------------
-MSE : 0.29
-R2  : 0.77
+```javascript
+show dbs
 ```
 
----
+### Use Database
 
-## 🔧 Example Code
+```javascript
+use myDatabase
+```
 
-```python
-from xgboost import XGBRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
+### Show Collections
 
-model = XGBRegressor(
-    n_estimators=100,
-    learning_rate=0.1,
-    max_depth=4
+```javascript
+show collections
+```
+
+### Insert Document
+
+```javascript
+db.users.insertOne({
+  name: "John",
+  age: 30
+})
+```
+
+### Find Documents
+
+```javascript
+db.users.find()
+```
+
+### Update Document
+
+```javascript
+db.users.updateOne(
+  { name: "John" },
+  { $set: { age: 31 } }
 )
+```
 
-model.fit(X_train, y_train)
+### Delete Document
 
-predictions = model.predict(X_test)
-
-print("MSE:", mean_squared_error(y_test, predictions))
-print("R2:", r2_score(y_test, predictions))
+```javascript
+db.users.deleteOne({ name: "John" })
 ```
 
 ---
 
-## 📊 Advantages of XGBoost
+## Example Query
 
-* High predictive performance
-* Built-in regularization
-* Handles missing values
-* Supports parallel processing
-* Works well with structured/tabular data
+Find users older than 25:
 
----
-
-## 📚 Learning Goals
-
-This project helps understand:
-
-* Gradient boosting
-* Tree-based ensemble learning
-* Model evaluation techniques
-* Hyperparameter tuning
+```javascript
+db.users.find({ age: { $gt: 25 } })
+```
 
 ---
 
-## 📝 License
+## Sample Datasets
 
-This project is for **educational purposes**.
+MongoDB Atlas provides sample databases for practice:
+
+* `sample_mflix`
+* `sample_airbnb`
+* `sample_weatherdata`
+* `sample_training`
+
+Example query:
+
+```javascript
+use sample_mflix
+db.movies.find().limit(5)
+```
+
+---
+
+## Advantages
+
+* Flexible schema
+* High scalability
+* Easy integration with modern applications
+* Suitable for large-scale distributed systems
+
+---
+
+## Limitations
+
+* No strict schema enforcement
+* Complex joins are harder compared to relational databases
+
+---
+
+## Common Use Cases
+
+* Real-time analytics
+* Content management systems
+* IoT platforms
+* Mobile applications
+* E-commerce systems
+
+---
+
+## Tools in MongoDB Ecosystem
+
+* MongoDB Compass – GUI for database management
+* MongoDB Atlas – Cloud-hosted MongoDB service
+* mongosh – MongoDB shell
+* Mongoose – ODM library for Node.js
+
+---
+
+## License
+
+This project is created for educational and demonstration purposes.
